@@ -24,19 +24,15 @@ connection.on('connect', function(err) {
         args = process.argv;
         var queryString = args[2]
         var qwerty = "SELECT pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid"
-        console.log("==========>", args);
         queryDatabase(queryString)
     }
 });
 
 function queryDatabase(queryString){
-    console.log('Reading rows from the Table...');
-
     // Read all rows from table
     request = new Request(
         queryString,
         function(err, rowCount, rows) {
-            console.log(rowCount + ' row(s) returned');
             connection.close()
             if (err) {
               process.exit(1)
@@ -45,12 +41,5 @@ function queryDatabase(queryString){
             }
         }
     );
-
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            console.log("%s\t%s", column.metadata.colName, column.value);
-        });
-    });
-
     connection.execSql(request);
 }
