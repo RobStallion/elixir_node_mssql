@@ -8,7 +8,8 @@ var config = {
   server: process.env.DB_SERVER,
   options: {
     database: process.env.DB,
-    encrypt: true
+    encrypt: true,
+    rowCollectionOnRequestCompletion: true
   }
 };
 
