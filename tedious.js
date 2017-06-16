@@ -3,14 +3,14 @@ var Request = require('tedious').Request;
 
 // Create connection to database
 var config = {
-  userName: 'ServerAdmin', // update me
-  password: '4j5Q9Kzl43t8', // update me
-  server: 'hl-test-server.database.windows.net', // update me
+  userName: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
   options: {
-      database: 'hl-database', //update me
-      encrypt: true
+    database: process.env.DB,
+    encrypt: true
   }
-}
+};
 
 var connection = new Connection(config);
 
