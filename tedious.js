@@ -19,7 +19,7 @@ connection.on('connect', function(err) {
     if (err) {
         console.log(err)
     }
-    else{
+    else {
         args = process.argv;
         var queryString = args[2]
         var qwerty = "SELECT pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid"
@@ -37,6 +37,11 @@ function queryDatabase(queryString){
         function(err, rowCount, rows) {
             console.log(rowCount + ' row(s) returned');
             connection.close()
+            if (err) {
+              process.exit(1)
+            } else {
+              process.stdout.write(JSON.stringify(rows))
+            }
         }
     );
 
@@ -45,12 +50,6 @@ function queryDatabase(queryString){
             console.log("%s\t%s", column.metadata.colName, column.value);
         });
     });
-
-    request.on('doneInProc', function(rowCount, more, rows) {
-      if (rowCount == 0) {
-      }
-        return JSON.stringify(rows)
-    })
 
     connection.execSql(request);
 }
