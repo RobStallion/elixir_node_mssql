@@ -15,9 +15,7 @@ defmodule ElixirNodeMssql.PageController do
   def handle_response(query_data) do
     case query_data do
       {data, 0} ->
-        IO.inspect(data, label: "stop making fun of my typing")
         Poison.decode!(data)
-        |> IO.inspect
       {error, 1} ->
         {:error, error}
     end
