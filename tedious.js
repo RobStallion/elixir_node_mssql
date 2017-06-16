@@ -18,7 +18,7 @@ var connection = new Connection(config);
 // Attempt to connect and execute queries if connection goes through
 connection.on('connect', function(err) {
     if (err) {
-        console.log(err)
+        process.exit(1)
     }
     else {
         args = process.argv;
