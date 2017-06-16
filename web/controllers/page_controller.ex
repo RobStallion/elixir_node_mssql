@@ -2,8 +2,9 @@ defmodule ElixirNodeMssql.PageController do
   use ElixirNodeMssql.Web, :controller
 
   def index(conn, _params) do
-    run_node_script(["tedious.js", "SELECT pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid"])
-    |> IO.inspect(label: "=====> response")
+    response = run_node_script(["tedious.js", "SELECT pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid"])
+    |> handle_response
+
     render conn, "index.html"
   end
 
@@ -11,4 +12,12 @@ defmodule ElixirNodeMssql.PageController do
     System.cmd("node", args)
   end
 
+  def handle_response(query_data) do
+    case query_data do
+      {data, 0} ->
+        Poison.decode!(data)
+      {error, 1} ->
+        {:error, error}
+    end
+  end
 end
